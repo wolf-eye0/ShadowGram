@@ -487,17 +487,42 @@ class ShadowGraphEngine:
         """Alias for compute_clusters_and_modularity() for benchmark and test compatibility."""
         return self.compute_clusters_and_modularity()
 
-    def quarantine_cluster(self, cluster_id: int) -> int:
-        """Sets status of all accounts in cluster to quarantined."""
+    def quarantine_cluster(self, cluster_id: int, account_id: Optional[str] = None) -> int:
+        """Sets status of all accounts in cluster (or specific account / flagged accounts) to quarantined."""
         self.quarantined_clusters.add(cluster_id)
         count = 0
         has_assigned_clusters = any(p.cluster_id is not None for p in self.sessions.values())
         for acc_id, prof in self.sessions.items():
-            if prof.cluster_id == cluster_id or (not has_assigned_clusters and cluster_id == 1):
+            should_quarantine = False
+            if account_id and (prof.account_id == account_id or prof.session_id == account_id):
+                should_quarantine = True
+            elif prof.cluster_id == cluster_id:
+                should_quarantine = True
+            elif not has_assigned_clusters and cluster_id == 1:
+                should_quarantine = True
+            elif cluster_id == 1 and prof.key1_status == "flagged_automation":
+                should_quarantine = True
+
+            if should_quarantine:
                 prof.status = "quarantined"
                 prof.step_up_status = "pending"
                 count += 1
         return count
+
+    def get_session_status(self, identifier: str) -> Optional[Dict[str, Any]]:
+        """Returns live profile state for a specific account or session."""
+        for prof in self.sessions.values():
+            if prof.account_id == identifier or prof.session_id == identifier:
+                return {
+                    "account_id": prof.account_id,
+                    "session_id": prof.session_id,
+                    "status": prof.status,
+                    "key1_status": prof.key1_status,
+                    "step_up_status": prof.step_up_status,
+                    "cluster_id": prof.cluster_id,
+                    "is_quarantined": prof.status == "quarantined"
+                }
+        return None
 
     def verify_step_up(self, identifier: str, account_id: Optional[str] = None, method: str = "upi_penny_drop") -> bool:
         """Step-up challenge resolution: clears quarantine status."""
@@ -507,6 +532,8 @@ class ShadowGraphEngine:
             if prof.account_id in (identifier, target_acc) or prof.session_id in (identifier, target_sess):
                 prof.status = "cleared"
                 prof.step_up_status = "cleared"
+                prof.key1_status = "cleared"
+                prof.cluster_id = None
                 prof.risk_label = "normal_organic"
                 return True
         return False

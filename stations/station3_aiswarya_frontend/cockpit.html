@@ -374,12 +374,31 @@
       for (let bn of backendNodes) {
         activeIds.add(bn.id);
         let n = nodeMap.get(bn.id);
-        const isBot = bn.cluster_id !== null || bn.risk_label === 'bot_swarm' || bn.key1_status === 'flagged_automation' || bn.status === 'quarantined';
         const isQuarantined = bn.status === 'quarantined';
+        const isCleared = bn.status === 'cleared' || bn.step_up_status === 'cleared';
+        const isBot = !isCleared && (bn.cluster_id !== null || bn.risk_label === 'bot_swarm' || bn.key1_status === 'flagged_automation');
+
+        let nodeColor = '#38bdf8';
+        let nodeType = 'human';
+        let nodeRadius = 3.5;
+
+        if (isQuarantined) {
+          nodeColor = '#f59e0b';
+          nodeType = 'quarantined';
+          nodeRadius = 5.0;
+        } else if (isCleared) {
+          nodeColor = '#10b981';
+          nodeType = 'human';
+          nodeRadius = 4.5;
+        } else if (isBot) {
+          nodeColor = '#ef4444';
+          nodeType = 'bot';
+          nodeRadius = 5.5;
+        }
 
         if (!n) {
           let nx, ny;
-          if (isBot) {
+          if (isBot || isQuarantined) {
             const cx = width * 0.58;
             const cy = height * 0.48;
             nx = cx + (Math.random() - 0.5) * 160;
@@ -394,17 +413,17 @@
             y: ny,
             vx: (Math.random() - 0.5) * (isBot ? 0.2 : 0.4),
             vy: (Math.random() - 0.5) * (isBot ? 0.2 : 0.4),
-            type: isBot ? 'bot' : 'human',
-            color: isQuarantined ? '#f59e0b' : (isBot ? '#ef4444' : '#38bdf8'),
-            radius: isBot ? 5.5 : 3.5,
+            type: nodeType,
+            color: nodeColor,
+            radius: nodeRadius,
             data: bn
           };
           nodeMap.set(bn.id, n);
         } else {
           n.data = bn;
-          n.type = isBot ? 'bot' : 'human';
-          n.color = isQuarantined ? '#f59e0b' : (isBot ? '#ef4444' : '#38bdf8');
-          n.radius = isBot ? 5.5 : 3.5;
+          n.type = nodeType;
+          n.color = nodeColor;
+          n.radius = nodeRadius;
         }
         updatedNodes.push(n);
       }

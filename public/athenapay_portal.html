@@ -242,9 +242,63 @@
     const form = document.getElementById('loan-form');
     const successBox = document.getElementById('success-box');
     const stepupModal = document.getElementById('stepup-modal');
+    let isQuarantined = false;
+    let isQuarantinedModalOpen = false;
+
+    function triggerQuarantineStepUp(reason) {
+      isQuarantined = true;
+      if (stepupModal && !isQuarantinedModalOpen) {
+        isQuarantinedModalOpen = true;
+        stepupModal.style.display = 'flex';
+        const titleEl = stepupModal.querySelector('h3');
+        if (titleEl) {
+          titleEl.textContent = '🛑 Quarantine Challenge: Proof of Human Agency';
+        }
+      }
+    }
+
+    // Auto-popup Step-Up modal when session is quarantined (Second-Chance Safeguard)
+    window.addEventListener('shadowgram:quarantined', function(e) {
+      console.log('[AthenaPay] Quarantine triggered for this session. Auto-opening Step-Up modal...', e.detail);
+      triggerQuarantineStepUp('Automated Quarantine Review');
+    });
+
+    // Real-time WebSocket listener for immediate cross-device quarantine trigger from Cockpit
+    (function initQuarantineSync() {
+      try {
+        const proto = location.protocol === 'https:' ? 'wss://' : 'ws://';
+        const host = location.host || 'localhost:8000';
+        const ws = new WebSocket(proto + host + '/ws');
+        ws.onmessage = function(event) {
+          try {
+            const msg = JSON.parse(event.data);
+            const myAcc = (window.ShadowGramTelemetry && window.ShadowGramTelemetry.accountId) || 'ACC-JUDGE-01';
+            if (msg.type === 'QUARANTINE_TRIGGERED') {
+              if (!msg.account_id || msg.account_id === myAcc || msg.cluster_id === 1) {
+                triggerQuarantineStepUp('Operator Quarantine Action');
+              }
+            }
+          } catch(err) {}
+        };
+      } catch(err) {}
+
+      // Heartbeat status poll fallback every 1200ms
+      setInterval(async function() {
+        if (window.ShadowGramTelemetry && window.ShadowGramTelemetry.checkStatus && !isQuarantinedModalOpen) {
+          const st = await window.ShadowGramTelemetry.checkStatus();
+          if (st && st.is_quarantined) {
+            triggerQuarantineStepUp('Status Poll Quarantine');
+          }
+        }
+      }, 1200);
+    })();
 
     form.addEventListener('submit', function(e) {
       e.preventDefault();
+      if (isQuarantined) {
+        triggerQuarantineStepUp('Verification required before disbursal');
+        return;
+      }
       if (window.ShadowGramTelemetry) {
         window.ShadowGramTelemetry.pushEvent('loan_submit', {
           route_path: '/loan -> /loan_approved',
@@ -258,14 +312,18 @@
 
     function triggerStepUpDemo() {
       stepupModal.style.display = 'flex';
+      isQuarantinedModalOpen = true;
     }
 
     function closeStepUpModal() {
+      isQuarantinedModalOpen = false;
       stepupModal.style.display = 'none';
     }
 
     // Common Verification Success Pathway (Shared by UPI Penny Drop & Account Aggregator Demo)
     function onVerificationCleared(methodName) {
+      isQuarantined = false;
+      isQuarantinedModalOpen = false;
       form.style.display = 'none';
       successBox.style.display = 'block';
       const badge = document.getElementById('stepup-badge');
@@ -288,9 +346,10 @@
 
       const sId = (window.ShadowGramTelemetry && window.ShadowGramTelemetry.sessionId) || 'sess-judge-live';
       const aId = (window.ShadowGramTelemetry && window.ShadowGramTelemetry.accountId) || 'ACC-JUDGE-01';
+      const apiHost = window.location.origin.startsWith('http') ? window.location.origin : 'http://localhost:8000';
 
       try {
-        const resp = await fetch('http://localhost:8000/api/step-up/verify', {
+        const resp = await fetch(apiHost + '/api/step-up/verify', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

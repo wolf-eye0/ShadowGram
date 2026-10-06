@@ -3,6 +3,7 @@ import json
 import time
 import hmac
 import hashlib
+from datetime import datetime, timezone
 from typing import List, Dict, Any, Set
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Depends, Header, Request, status
@@ -177,7 +178,36 @@ async def receive_telemetry(event: TelemetryEvent, db: Session = Depends(get_db)
         "payload": payload_dict
     })
 
-    return {"status": "ingested", "account_id": event.account_id, "timestamp": event.timestamp}
+    prof = graph_engine.sessions.get(event.account_id)
+    is_quarantined = (prof.status == "quarantined") if prof else False
+    key1_status = prof.key1_status if prof else "cleared"
+    step_up_status = prof.step_up_status if prof else "none"
+
+    return {
+        "status": "quarantined" if is_quarantined else "ingested",
+        "account_id": event.account_id,
+        "is_quarantined": is_quarantined,
+        "key1_status": key1_status,
+        "step_up_status": step_up_status,
+        "timestamp": event.timestamp
+    }
+
+@app.get("/api/session/status")
+def get_session_status(account_id: str):
+    """
+    Returns live quarantine and step-up state for borrower portal synchronization.
+    Used by athenapay_portal.html to trigger immediate Step-Up challenge modals upon quarantine.
+    """
+    state = graph_engine.get_session_status(account_id)
+    if not state:
+        return {
+            "account_id": account_id,
+            "status": "active",
+            "key1_status": "cleared",
+            "step_up_status": "not_required",
+            "is_quarantined": False
+        }
+    return state
 
 @app.get("/api/graph", response_model=GraphResponse)
 def get_graph():
@@ -207,10 +237,10 @@ async def repartition_graph(threshold: float = 0.70):
 @app.post("/api/quarantine", response_model=QuarantineResponse)
 async def quarantine_cluster(req: QuarantineRequest, db: Session = Depends(get_db)):
     """
-    Executes cluster-wide quarantine isolation.
+    Executes cluster-wide or account-level quarantine isolation.
     Disables accounts, logs compliance decision, and alerts 3D cockpit.
     """
-    quarantined_count = graph_engine.quarantine_cluster(req.cluster_id)
+    quarantined_count = graph_engine.quarantine_cluster(req.cluster_id, req.account_id)
     dow_savings = quarantined_count * 61.0
 
     # Persist cluster record
@@ -221,7 +251,7 @@ async def quarantine_cluster(req: QuarantineRequest, db: Session = Depends(get_d
                 cluster_id=req.cluster_id,
                 size=quarantined_count,
                 status="quarantined",
-                quarantined_at=time.time(),
+                quarantined_at=datetime.now(timezone.utc),
                 reasons_json=json.dumps([req.reason])
             )
             db.add(c_rec)
@@ -236,6 +266,7 @@ async def quarantine_cluster(req: QuarantineRequest, db: Session = Depends(get_d
     await ws_manager.broadcast({
         "type": "QUARANTINE_TRIGGERED",
         "cluster_id": req.cluster_id,
+        "account_id": req.account_id,
         "operator_id": req.operator_id,
         "quarantined_accounts": quarantined_count,
         "dow_savings_inr": dow_savings,

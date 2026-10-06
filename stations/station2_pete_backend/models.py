@@ -150,10 +150,12 @@ class GraphResponse(BaseModel):
 
 
 class QuarantineRequest(BaseModel):
-    cluster_id: int
+    cluster_id: int = 1
+    account_id: Optional[str] = None
     action: str = "isolate"  # isolate | step_up_challenge | release
     reason: str = "Coordinated multi-agent swarm detected via Leiden community clustering"
     operator_id: str = "OFFICER-LEAD"
+
 
 
 class QuarantineResponse(BaseModel):

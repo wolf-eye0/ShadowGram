@@ -280,6 +280,12 @@
           headers: { 'Content-Type': 'application/json' },
           body: payloadStr,
           keepalive: true
+        }).then(function (resp) {
+          return resp.json();
+        }).then(function (data) {
+          if (data && (data.is_quarantined || data.status === 'quarantined')) {
+            window.dispatchEvent(new CustomEvent('shadowgram:quarantined', { detail: data }));
+          }
         }).catch(function (err) {
           console.debug('[ShadowGram Telemetry] Ingress offline:', err.message);
         });
@@ -294,7 +300,20 @@
     sessionId: sessionId,
     accountId: accountId,
     pushEvent: pushTelemetryEvent,
-    flush: flushQueue
+    flush: flushQueue,
+    checkStatus: async function () {
+      try {
+        const base = BACKEND_ENDPOINT.replace(/\/telemetry$/, '');
+        const res = await fetch(base + '/api/session/status?account_id=' + encodeURIComponent(accountId));
+        const data = await res.json();
+        if (data && (data.is_quarantined || data.status === 'quarantined')) {
+          window.dispatchEvent(new CustomEvent('shadowgram:quarantined', { detail: data }));
+        }
+        return data;
+      } catch (e) {
+        return null;
+      }
+    }
   };
 
   console.log('[ShadowGram] Telemetry SDK initialized for session:', sessionId, 'Account:', accountId);
