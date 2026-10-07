@@ -175,12 +175,15 @@ async def receive_telemetry(event: TelemetryEvent, db: Session = Depends(get_db)
     prof = graph_engine.sessions.get(event.account_id)
     is_quarantined = (prof.status == "quarantined") if prof else False
     key1_status = prof.key1_status if prof else "cleared"
+    is_flagged = (key1_status == "flagged_automation" or (prof and prof.cluster_id is not None))
     step_up_status = prof.step_up_status if prof else "none"
 
     return {
-        "status": "quarantined" if is_quarantined else "ingested",
+        "status": "quarantined" if is_quarantined else ("flagged" if is_flagged else "ingested"),
         "account_id": event.account_id,
         "is_quarantined": is_quarantined,
+        "is_flagged": is_flagged,
+        "requires_stepup": is_quarantined or is_flagged,
         "key1_status": key1_status,
         "step_up_status": step_up_status,
         "timestamp": event.timestamp
@@ -199,7 +202,9 @@ def get_session_status(account_id: str):
             "status": "active",
             "key1_status": "cleared",
             "step_up_status": "not_required",
-            "is_quarantined": False
+            "is_quarantined": False,
+            "is_flagged": False,
+            "requires_stepup": False
         }
     return state
 
@@ -487,6 +492,29 @@ async def serve_mathematical_deep_dive():
     if os.path.exists(path):
         return FileResponse(path, media_type="text/html")
     raise HTTPException(status_code=404, detail="Mathematical deep dive HTML not found")
+
+@app.get("/shadowgram_phase2_technical_specification_ste100.html", include_in_schema=False)
+@app.get("/specification", include_in_schema=False)
+@app.get("/spec", include_in_schema=False)
+async def serve_ste100_specification():
+    """Serves the ASD-STE100 Phase 2 Technical Specification HTML."""
+    path = os.path.join(PUBLIC_DIR, "shadowgram_phase2_technical_specification_ste100.html")
+    if os.path.exists(path):
+        return FileResponse(path, media_type="text/html")
+    raise HTTPException(status_code=404, detail="STE100 Specification HTML not found")
+
+@app.get("/presentation_roles_and_pitch_script.html", include_in_schema=False)
+@app.get("/pitch", include_in_schema=False)
+@app.get("/roles", include_in_schema=False)
+@app.get("/presentation", include_in_schema=False)
+async def serve_pitch_roles():
+    """Serves the 10-minute HackAthena Pitch Script, Team Role Allocation & Q&A Battlecards."""
+    path = os.path.join(PUBLIC_DIR, "presentation_roles_and_pitch_script.html")
+    if os.path.exists(path):
+        return FileResponse(path, media_type="text/html")
+    raise HTTPException(status_code=404, detail="Pitch and roles HTML not found")
+
+
 
 
 

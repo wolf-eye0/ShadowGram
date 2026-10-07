@@ -513,6 +513,8 @@ class ShadowGraphEngine:
         """Returns live profile state for a specific account or session."""
         for prof in self.sessions.values():
             if prof.account_id == identifier or prof.session_id == identifier:
+                is_flagged = (prof.key1_status == "flagged_automation" or prof.cluster_id is not None)
+                is_quar = (prof.status == "quarantined")
                 return {
                     "account_id": prof.account_id,
                     "session_id": prof.session_id,
@@ -520,7 +522,9 @@ class ShadowGraphEngine:
                     "key1_status": prof.key1_status,
                     "step_up_status": prof.step_up_status,
                     "cluster_id": prof.cluster_id,
-                    "is_quarantined": prof.status == "quarantined"
+                    "is_flagged": is_flagged,
+                    "is_quarantined": is_quar,
+                    "requires_stepup": is_flagged or is_quar
                 }
         return None
 

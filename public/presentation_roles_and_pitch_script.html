@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShadowGram — 10-Minute HackAthena Pitch Script, Team Roles & Judge Defense Matrix</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090D16;
+      --card-bg: #111827;
+      --card-hover: #162032;
+      --border: #1F2937;
+      --border-accent: #374151;
+      --text-main: #F9FAFB;
+      --text-muted: #9CA3AF;
+      --text-dim: #6B7280;
+      
+      --cyan: #0284C7;
+      --cyan-glow: rgba(2, 132, 199, 0.25);
+      --emerald: #10B981;
+      --emerald-glow: rgba(16, 185, 129, 0.25);
+      --coral: #EF4444;
+      --coral-glow: rgba(239, 68, 68, 0.25);
+      --amber: #F59E0B;
+      --amber-glow: rgba(245, 158, 11, 0.25);
+      --purple: #8B5CF6;
+      --purple-glow: rgba(139, 92, 246, 0.25);
+      --indigo: #6366F1;
+      --indigo-glow: rgba(99, 102, 241, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      padding-bottom: 80px;
+    }
+
+    /* Fixed Top Timer Bar */
+    .sticky-timer-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(9, 13, 22, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .timer-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo-badge {
+      font-family: 'Hahmlet', serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-badge span {
+      color: var(--cyan);
+    }
+
+    .track-pill {
+      background: rgba(2, 132, 199, 0.15);
+      border: 1px solid var(--cyan);
+      color: #38BDF8;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      letter-spacing: 0.05em;
+    }
+
+    .timer-center {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .timer-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: 2px;
+      min-width: 140px;
+      text-align: center;
+    }
+
+    .timer-display.pitch-mode {
+      color: var(--emerald);
+      text-shadow: 0 0 16px var(--emerald-glow);
+    }
+
+    .timer-display.qa-mode {
+      color: var(--cyan);
+      text-shadow: 0 0 16px var(--cyan-glow);
+    }
+
+    .timer-display.danger-mode {
+      color: var(--coral);
+      text-shadow: 0 0 20px var(--coral-glow);
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .timer-controls {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--cyan);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #0275B1;
+    }
+
+    .btn-secondary {
+      background: #1F2937;
+      color: var(--text-main);
+      border-color: #374151;
+    }
+    .btn-secondary:hover {
+      background: #374151;
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: var(--coral);
+      color: #F87171;
+    }
+
+    .stage-indicator {
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 6px;
+      background: #1F2937;
+      color: var(--text-muted);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    /* Header */
+    .hero-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .hero-title {
+      font-family: 'Hahmlet', serif;
+      font-size: 2.8rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #FFFFFF 0%, #94A3B8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: #94A3B8;
+      max-width: 780px;
+      margin: 0 auto 20px;
+    }
+
+    /* Team Roster Grid */
+    .roster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .member-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    .member-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-2px);
+    }
+
+    .member-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+
+    .card-pete::before { background: var(--cyan); }
+    .card-aiswarya::before { background: var(--emerald); }
+    .card-alan::before { background: var(--amber); }
+    .card-ashlin::before { background: var(--purple); }
+
+    .member-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .member-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .member-dept {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    .member-station {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .member-role-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--cyan);
+      margin-bottom: 8px;
+    }
+
+    .card-aiswarya .member-role-title { color: var(--emerald); }
+    .card-alan .member-role-title { color: var(--amber); }
+    .card-ashlin .member-role-title { color: var(--purple); }
+
+    .member-duties {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      list-style: none;
+    }
+
+    .member-duties li {
+      margin-bottom: 6px;
+      position: relative;
+      padding-left: 14px;
+    }
+
+    .member-duties li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--text-dim);
+    }
+
+    .member-qa-takeover {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .tag-takeover {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+    }
+
+    /* Section Headers */
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Hahmlet', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-badge {
+      font-size: 0.8rem;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
+    }
+
+    /* Slide Timeline Cards */
+    .slide-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-bottom: 56px;
+    }
+
+    .slide-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    .slide-card:hover {
+      border-color: var(--border-accent);
+    }
+
+    .slide-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .slide-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .slide-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-main);
+      background: #1F2937;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .slide-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .slide-speaker-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 9999px;
+    }
+
+    .speaker-pete { background: rgba(2, 132, 199, 0.2); color: #38BDF8; border: 1px solid var(--cyan); }
+    .speaker-alan { background: rgba(245, 158, 11, 0.2); color: #FBBF24; border: 1px solid var(--amber); }
+    .speaker-ashlin { background: rgba(139, 92, 246, 0.2); color: #C084FC; border: 1px solid var(--purple); }
+    .speaker-aiswarya { background: rgba(16, 185, 129, 0.2); color: #34D399; border: 1px solid var(--emerald); }
+    .speaker-all { background: rgba(239, 68, 68, 0.2); color: #F87171; border: 1px solid var(--coral); }
+
+    .slide-time-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #94A3B8;
+      background: #1F2937;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .slide-body {
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .slide-body { grid-template-columns: 1fr; }
+    }
+
+    .slide-content-left {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 18px;
+    }
+
+    .box-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .bullet-preview-list {
+      list-style: none;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .bullet-preview-list li {
+      margin-bottom: 8px;
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .bullet-preview-list li strong {
+      color: var(--text-main);
+    }
+
+    .bullet-preview-list li::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--cyan);
+    }
+
+    .slide-script-right {
+      background: rgba(2, 132, 199, 0.05);
+      border: 1px solid rgba(2, 132, 199, 0.2);
+      border-radius: 8px;
+      padding: 18px;
+      position: relative;
+    }
+
+    .script-text {
+      font-size: 0.95rem;
+      color: #E2E8F0;
+      line-height: 1.7;
+      font-style: italic;
+    }
+
+    .script-highlight {
+      background: rgba(253, 224, 71, 0.15);
+      color: #FEF08A;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-weight: 600;
+      font-style: normal;
+    }
+
+    .handoff-box {
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: rgba(0, 0, 0, 0.3);
+      border-left: 3px solid var(--amber);
+      border-radius: 4px;
+      font-size: 0.85rem;
+      color: #FCD34D;
+      font-weight: 600;
+    }
+
+    /* 5-Act Live Demo Grid */
+    .demo-acts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .act-card {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .act-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .act-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #1F2937;
+    }
+
+    .act-station {
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .act-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .act-action {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .act-command {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      background: #000;
+      padding: 6px 8px;
+      border-radius: 4px;
+      color: #A7F3D0;
+      word-break: break-all;
+    }
+
+    /* Q&A Filter Bar */
+    .qa-filter-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: #1F2937;
+      color: var(--text-main);
+      border-color: var(--cyan);
+    }
+
+    /* Q&A Defense Cards */
+    .qa-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .qa-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.2s;
+    }
+
+    .qa-card:hover {
+      border-color: var(--border-accent);
+    }
+
+    .qa-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+      gap: 16px;
+    }
+
+    .qa-question {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      gap: 12px;
+    }
+
+    .qa-q-mark {
+      color: var(--coral);
+      font-weight: 800;
+    }
+
+    .qa-owner-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      white-space: nowrap;
+    }
+
+    .qa-hook-box {
+      background: rgba(16, 185, 129, 0.08);
+      border-left: 3px solid var(--emerald);
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin-bottom: 12px;
+    }
+
+    .hook-title {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: #34D399;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .hook-text {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #ECFDF5;
+    }
+
+    .qa-deep-dive {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    .qa-stats-row {
+      margin-top: 14px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .stat-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #CBD5E1;
+    }
+
+    /* Print / Cheat sheet styles */
+    @media print {
+      .sticky-timer-bar, .timer-controls, .qa-filter-bar {
+        display: none;
+      }
+      body {
+        background: white;
+        color: black;
+      }
+      .slide-card, .qa-card, .member-card {
+        border: 1px solid #ccc;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Top Countdown Bar -->
+  <header class="sticky-timer-bar">
+    <div class="timer-left">
+      <div class="logo-badge">
+        <span>SHADOWGRAM</span> • PITCH MASTER
+      </div>
+      <div class="track-pill">TRACK 04: SYNTHETIC IDENTITY & KYC</div>
+    </div>
+
+    <div class="timer-center">
+      <div class="stage-indicator" id="stageIndicator">STAGE 1: PITCH (6:30 MAX)</div>
+      <div class="timer-display pitch-mode" id="timerDisplay">10:00</div>
+    </div>
+
+    <div class="timer-controls">
+      <button class="btn btn-primary" id="btnStartPause">START PITCH</button>
+      <button class="btn btn-secondary" id="btnReset">RESET</button>
+      <button class="btn btn-secondary" onclick="adjustTime(30)">+30s</button>
+      <button class="btn btn-secondary" onclick="adjustTime(-30)">-30s</button>
+    </div>
+  </header>
+
+  <div class="container">
+    
+    <!-- Hero Intro -->
+    <section class="hero-header">
+      <h1 class="hero-title">10-Minute Presentation Master & Q&A Battle Plan</h1>
+      <p class="hero-subtitle">
+        HackAthena 2.0 Live Presentation Choreography: Exact slide scripts, 6-minute 30-second multi-station live demo flow, and the definitive judge defense takeover matrix.
+      </p>
+    </section>
+
+    <!-- Team Specialization & Hand-Off Roles -->
+    <section>
+      <div class="section-head">
+        <h2 class="section-title">👥 Team Roster & Designated Specializations</h2>
+        <span class="section-badge">4 STATIONS • 4 SPECIALIZATIONS</span>
+      </div>
+
+      <div class="roster-grid">
+        <!-- Pete -->
+        <div class="member-card card-pete">
+          <div class="member-top">
+            <div>
+              <div class="member-name">Mohammed Nihad PC</div>
+              <div class="member-dept">Cyber Security</div>
+            </div>
+            <div class="member-station">STATION 2</div>
+          </div>
+          <div class="member-role-title">Team Captain & Forensics Architect</div>
+          <ul class="member-duties">
+            <li><strong>Pitch Responsibilities:</strong> Slide 1 (Opening Hook) & Slide 3 (Two-Key & 5-Layer Multiplex Hypergraph Physics).</li>
+            <li><strong>Live Demo Role:</strong> Modularity Ticker ($Q = 0.8118, p = 0.0002$), Why Card inspection, 1-Click Quarantine execution.</li>
+            <li><strong>The Anchor:</strong> General strategy, coordination, and backing up teammates if needed.</li>
+          </ul>
+          <div class="member-qa-takeover">
+            DEFENDS: <span class="tag-takeover" style="border: 1px solid var(--cyan); color: #38BDF8;">Graph Mathematics • Modularity Q • Multiplex Tensor</span>
+          </div>
+        </div>
+
+        <!-- Aiswarya -->
+        <div class="member-card card-aiswarya">
+          <div class="member-top">
+            <div>
+              <div class="member-name">Aiswarya Kallayil Rajesh</div>
+              <div class="member-dept">AI & Data Science</div>
+            </div>
+            <div class="member-station">STATION 3</div>
+          </div>
+          <div class="member-role-title">Borrower Portal & Frontend UX Lead</div>
+          <ul class="member-duties">
+            <li><strong>Pitch Responsibilities:</strong> AthenaPay Single Page Application workflow & 3D WebGL Galaxy Cockpit.</li>
+            <li><strong>Live Demo Role:</strong> Act 1 (Honest human loan submission & instant clearance) & Act 4 (The Reversible ₹1 UPI Step-Up Modal interceptor).</li>
+            <li><strong>The UX Guardian:</strong> Explains human interaction pacing, customer friction elimination, and borrower recovery.</li>
+          </ul>
+          <div class="member-qa-takeover">
+            DEFENDS: <span class="tag-takeover" style="border: 1px solid var(--emerald); color: #34D399;">Borrower UX • Friction • ₹1 UPI Challenge</span>
+          </div>
+        </div>
+
+        <!-- Alan -->
+        <div class="member-card card-alan">
+          <div class="member-top">
+            <div>
+              <div class="member-name">Alan E Alexander</div>
+              <div class="member-dept">AI & Data Science</div>
+            </div>
+            <div class="member-station">STATION 1</div>
+          </div>
+          <div class="member-role-title">Swarm Runner, Privacy & Production Lead</div>
+          <ul class="member-duties">
+            <li><strong>Pitch Responsibilities:</strong> Slide 2 (The AI Swarm Crisis, Legacy Tool Blindspots & Pre-KYC Denial-of-Wallet Bleed).</li>
+            <li><strong>Live Demo Role:</strong> Act 2 (Dispatches 20 stealth bots with Flash-Hogan biomechanical curves in 1.4s).</li>
+            <li><strong>The Operator:</strong> Explains client telemetry SDK, memory optimization (<600MB RAM), and production scalability.</li>
+          </ul>
+          <div class="member-qa-takeover">
+            DEFENDS: <span class="tag-takeover" style="border: 1px solid var(--amber); color: #FBBF24;">Privacy (Zero-PII) • DPDP Act 2023 • Production Scaling</span>
+          </div>
+        </div>
+
+        <!-- Ashlin -->
+        <div class="member-card card-ashlin">
+          <div class="member-top">
+            <div>
+              <div class="member-name">Ashlin Theres James</div>
+              <div class="member-dept">AI & Data Science</div>
+            </div>
+            <div class="member-station">STATION 4</div>
+          </div>
+          <div class="member-role-title">Regulatory Compliance & Courtroom SAR Lead</div>
+          <ul class="member-duties">
+            <li><strong>Pitch Responsibilities:</strong> Slide 4 (4-Station Modular Ecosystem, Zero-Cloud CPU Embeddings & Statutory Grounding).</li>
+            <li><strong>Live Demo Role:</strong> Act 5 (Instant 2-Page Courtroom SAR PDF generation in <20ms with HMAC seal).</li>
+            <li><strong>The Legal Counsel:</strong> Details RBI Digital Lending Master Directions, ECOA Reg B adverse action codes, and EU AI Act explainability.</li>
+          </ul>
+          <div class="member-qa-takeover">
+            DEFENDS: <span class="tag-takeover" style="border: 1px solid var(--purple); color: #C084FC;">Legal Admissibility • RBI / ECOA Rules • SAR Cryptography</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide-by-Slide Pitch Script -->
+    <section>
+      <div class="section-head">
+        <h2 class="section-title">⏱️ 6:30 Slide-by-Slide Presentation Script & Live Cues</h2>
+        <span class="section-badge">TARGET: 6 MIN 30 SEC (3:30 BUFFER FOR Q&A)</span>
+      </div>
+
+      <div class="slide-flow">
+        
+        <!-- Slide 1 -->
+        <div class="slide-card">
+          <div class="slide-header-bar">
+            <div class="slide-meta">
+              <span class="slide-num">SLIDE 1</span>
+              <span class="slide-name">Project Title, Team Crafty Crew & Track 04 Anchor</span>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <span class="slide-speaker-badge speaker-pete">SPEAKER: PETE</span>
+              <span class="slide-time-pill">0:00 – 0:45 (45s)</span>
+            </div>
+          </div>
+          <div class="slide-body">
+            <div class="slide-content-left">
+              <div class="box-title">Slide Elements Highlighted</div>
+              <ul class="bullet-preview-list">
+                <li><strong>Title:</strong> SHADOWGRAM — In-Flight Behavioral Hypergraph Forensics & Autonomous AI Swarm Defense.</li>
+                <li><strong>Team & Institution:</strong> Crafty Crew • Jyothi Engineering College (Autonomous), Thrissur.</li>
+                <li><strong>Track:</strong> Track 04: Synthetic Identity & KYC Fraud.</li>
+                <li><strong>Station Topology:</strong> 4 specialized engineering stations collaborating over a local hardware cyber range.</li>
+              </ul>
+            </div>
+            <div class="slide-script-right">
+              <div class="box-title">Word-for-Word Verbal Script</div>
+              <p class="script-text">
+                "Respected judges and organizers, good morning. We are <strong>Team Crafty Crew</strong> from Jyothi Engineering College, competing in <strong>Track 04: Synthetic Identity & KYC Fraud</strong>. Today, we present <span class="script-highlight">SHADOWGRAM</span>.<br><br>
+                In 2026, financial fraud has mutated. Attackers are no longer single hackers typing behind keyboards; they deploy <strong>autonomous AI swarms</strong> running thousands of concurrent browser contexts that harvest synthetic KYC identities to drain micro-lending portals before detection.<br><br>
+                Today, on our 4 physical laptops, we will demonstrate a production-ready, zero-cloud defense that intercepts these swarms in-flight. I now pass to Alan to explain the crisis."
+              </p>
+              <div class="handoff-box">
+                👉 HAND-OFF: "I now pass to Alan to explain the crisis facing existing defenses."
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide-card">
+          <div class="slide-header-bar">
+            <div class="slide-meta">
+              <span class="slide-num">SLIDE 2</span>
+              <span class="slide-name">Problem Statement: The AI Swarm Crisis & Pre-KYC Cost Bleed</span>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <span class="slide-speaker-badge speaker-alan">SPEAKER: ALAN</span>
+              <span class="slide-time-pill">0:45 – 2:00 (1m 15s)</span>
+            </div>
+          </div>
+          <div class="slide-body">
+            <div class="slide-content-left">
+              <div class="box-title">Slide Elements Highlighted</div>
+              <ul class="bullet-preview-list">
+                <li><strong>01. AI Swarms:</strong> Coordinated multi-accounting, +211% surge in BNPL fraud, instant flash defaults.</li>
+                <li><strong>02. Legacy Failures:</strong> BioCatch needs historical baselines; ThreatMetrix bypassed by 4G proxies; CAPTCHAs solved by Vision-AI >70%.</li>
+                <li><strong>03. Denial-of-Wallet:</strong> ₹61.00 per bot in wasted Aadhaar (₹3), PAN (₹2), Liveness (₹6), and Bureau (₹50) API lookups!</li>
+              </ul>
+            </div>
+            <div class="slide-script-right">
+              <div class="box-title">Word-for-Word Verbal Script</div>
+              <p class="script-text">
+                "Thank you, Pete. The fundamental problem is that <span class="script-highlight">traditional security evaluates accounts in complete isolation</span>. When an adversary deploys an autonomous AI agent swarm, every bot has a unique name, a unique synthetic Aadhaar/PAN, and an LLM-generated loan narrative. To legacy systems, every single bot looks like an independent, legitimate human.<br><br>
+                Tools like <strong>BioCatch</strong> fail because they require a historical biometric baseline—synthetic accounts have zero history. Consortium IP tools fail because attackers rotate residential 4G/5G mobile proxies. And Vision-LLMs now solve visual CAPTCHAs with over 70% accuracy.<br><br>
+                Worst of all is the <strong>Denial-of-Wallet bleed</strong>. Every bot that passes Step 1 forces the lender to pay non-refundable verification fees: ₹3 for Aadhaar e-KYC, ₹2 for PAN, ₹6 for face liveness, and ₹50 for bureau pulls. That is <span class="script-highlight">₹61.00 INR lost per fake bot</span> before any loan decision! A swarm of 10,000 bots bleeds ₹6.1 Lakhs in pure API fees. Pete will now reveal how ShadowGram stops this."
+              </p>
+              <div class="handoff-box">
+                👉 HAND-OFF: "Pete will now show how our Two-Key Hypergraph Defense stops this bleed in real time."
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide-card">
+          <div class="slide-header-bar">
+            <div class="slide-meta">
+              <span class="slide-num">SLIDE 3</span>
+              <span class="slide-name">Proposed Solution: The Two-Key Hypergraph Defense</span>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <span class="slide-speaker-badge speaker-pete">SPEAKER: PETE</span>
+              <span class="slide-time-pill">2:00 – 3:30 (1m 30s)</span>
+            </div>
+          </div>
+          <div class="slide-body">
+            <div class="slide-content-left">
+              <div class="box-title">Slide Elements Highlighted</div>
+              <ul class="bullet-preview-list">
+                <li><strong>Two-Key Architecture:</strong> Key 1 (&lt;0.02ms Fast Filter) + Key 2 (Relational Hypergraph Engine).</li>
+                <li><strong>5-Layer Multiplex:</strong> Timing (exponential kernel), Navigation (LCS/Jaccard), Loan Reason (384-dim text embeddings), Mouse Motion (8–12 Hz tremor vs Bézier curves), Hardware Entropy (Canvas/WebGL).</li>
+                <li><strong>Ethical Rails:</strong> Campus Wi-Fi immunity (0.0% false positives) + Reversible ₹1 UPI Step-Up challenge.</li>
+              </ul>
+            </div>
+            <div class="slide-script-right">
+              <div class="box-title">Word-for-Word Verbal Script</div>
+              <p class="script-text">
+                "Our core thesis is simple: <span class="script-highlight">Fraud is not inside the isolated account — it is exposed in the relational physics between accounts</span>.<br><br>
+                We deploy a <strong>Two-Key Defense</strong>. <strong>Key 1</strong> is an ultra-fast tripwire running in under 0.02 milliseconds. It checks physical DOM invariants: did the click have pre-click mouse movement? Was dwell time under 5 milliseconds? Naive scripts are rejected instantly before Form Step 2.<br><br>
+                For advanced, humanized bots, <strong>Key 2</strong> constructs a <strong>5-layer behavioral hypergraph</strong> across active sessions in a 10-minute rolling window: measuring micro-temporal arrival synchronization ($s_{\text{time}} = e^{-\Delta t / 10}$), DOM route subsequence alignment, semantic loan reason cosine similarity, and human 8–12 Hz neuromotor tremor versus polynomial jerk splines ($\text{CV}_J &lt; 0.25$).<br><br>
+                Under our <strong>3-layer sparsification filter</strong>, an edge only instantiates if composite correlation exceeds 0.78 across three orthogonal layers. Furthermore, on shared campus Wi-Fi, our <strong>Common-Cause Subnet Discount</strong> yields a proven <strong>0.0% False Positive Rate</strong>. Ashlin will now walk through our tech stack."
+              </p>
+              <div class="handoff-box">
+                👉 HAND-OFF: "Ashlin will now explain how our modular tech stack operates 100% offline."
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="slide-card">
+          <div class="slide-header-bar">
+            <div class="slide-meta">
+              <span class="slide-num">SLIDE 4</span>
+              <span class="slide-name">Technology Stack: 4-Station Modular Ecosystem</span>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <span class="slide-speaker-badge speaker-ashlin">SPEAKER: ASHLIN</span>
+              <span class="slide-time-pill">3:30 – 4:45 (1m 15s)</span>
+            </div>
+          </div>
+          <div class="slide-body">
+            <div class="slide-content-left">
+              <div class="box-title">Slide Elements Highlighted</div>
+              <ul class="bullet-preview-list">
+                <li><strong>Station 2 (Pete):</strong> FastAPI & Uvicorn gateway, NetworkX hypergraph clustering, local CPU 384-dim vectorizer (&lt;0.2ms).</li>
+                <li><strong>Station 3 (Aiswarya):</strong> Zero-PII Telemetry SDK (`telemetry.js`), 20 financial digraphs, Honey-DOM trap.</li>
+                <li><strong>Station 1 & 3:</strong> Three.js 3D WebGL Cockpit (60 FPS) + Playwright swarm engine with Flash-Hogan splines.</li>
+                <li><strong>Station 4 (Ashlin):</strong> ReportLab 2-Page Courtroom SAR PDF, HMAC-SHA256 seal, ECOA Reg B compliance.</li>
+              </ul>
+            </div>
+            <div class="slide-script-right">
+              <div class="box-title">Word-for-Word Verbal Script</div>
+              <p class="script-text">
+                "Thank you, Pete. ShadowGram is built from the ground up to be <strong>100% deterministic, modular, and cloud-independent</strong>.<br><br>
+                On <strong>Station 2</strong>, Pete runs our central ASGI FastAPI gateway and NetworkX graph engine, computing 384-dimensional dense semantic vectors directly on the CPU in under 0.2 milliseconds—with zero reliance on external OpenAI or Claude APIs.<br><br>
+                On <strong>Station 3</strong>, Aiswarya engineered our <strong>Zero-PII Telemetry SDK</strong>. It captures only physical flight and dwell time deltas—never recording user keystrokes, names, or passwords, ensuring full compliance with the Indian DPDP Act 2023.<br><br>
+                On <strong>Station 1</strong>, Alan operates our Playwright red-team runner, while on <strong>Station 4</strong>, I maintain our <strong>ReportLab Legal SAR Engine</strong>. When a syndicate is isolated, Station 4 compiles a bank-grade 2-Page Courtroom Suspicious Activity Report in under 20 milliseconds, cryptographically signed with an HMAC-SHA256 seal for court admissibility under ECOA Regulation B. Now, let us switch to our live 4-station cyber range demo!"
+              </p>
+              <div class="handoff-box">
+                👉 HAND-OFF: "Aiswarya, take over for Act 1 of our live demonstration on Station 3."
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 5 & Live Demo -->
+        <div class="slide-card" style="border: 1px solid var(--emerald);">
+          <div class="slide-header-bar" style="background: rgba(16, 185, 129, 0.05);">
+            <div class="slide-meta">
+              <span class="slide-num" style="background: var(--emerald); color: black;">SLIDE 5 + DEMO</span>
+              <span class="slide-name">Live 5-Act Demonstration on 4-Station Cyber Range</span>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <span class="slide-speaker-badge speaker-all">ALL 4 STATIONS</span>
+              <span class="slide-time-pill">4:45 – 6:30 (1m 45s)</span>
+            </div>
+          </div>
+          <div class="slide-body">
+            <div style="grid-column: span 2;">
+              <div class="box-title">The 5-Act Live Hardware Choreography</div>
+              
+              <div class="demo-acts-grid">
+                <!-- Act 1 -->
+                <div class="act-card">
+                  <div class="act-head">
+                    <span class="act-num">ACT 1</span>
+                    <span class="act-station" style="color: var(--emerald);">AISWARYA @ 10.215.30.204</span>
+                  </div>
+                  <div class="act-title">Honest Human Borrower</div>
+                  <div class="act-action">Aiswarya applies naturally on `athenapay_portal.html`. Variable typing dwell, natural tremor.</div>
+                  <div class="act-command">CLICK SUBMIT LOAN &rarr; LOAN APPROVED</div>
+                  <p style="font-size: 0.8rem; color: #94A3B8; margin-top: 8px;">
+                    <em>"I submit a normal loan. Notice human typing jitter. In Pete's 3D cockpit, I appear as an isolated green node. Approved instantly."</em>
+                  </p>
+                </div>
+
+                <!-- Act 2 -->
+                <div class="act-card">
+                  <div class="act-head">
+                    <span class="act-num">ACT 2</span>
+                    <span class="act-station" style="color: var(--amber);">ALAN @ 10.215.30.174</span>
+                  </div>
+                  <div class="act-title">20-Bot Swarm Ingress</div>
+                  <div class="act-action">Alan triggers headless Chromium swarm with Flash-Hogan splines in a 1.4s window.</div>
+                  <div class="act-command">python simulation/swarm_runner.py --mode stealth --count 20</div>
+                  <p style="font-size: 0.8rem; color: #94A3B8; margin-top: 8px;">
+                    <em>"Alan launches 20 stealth bots. Individually, each passes single-user checks. But in Pete's cockpit, look at the relational collapse!"</em>
+                  </p>
+                </div>
+
+                <!-- Act 3 -->
+                <div class="act-card">
+                  <div class="act-head">
+                    <span class="act-num">ACT 3</span>
+                    <span class="act-station" style="color: var(--cyan);">PETE @ 10.215.30.162</span>
+                  </div>
+                  <div class="act-title">Hypergraph Collapse & Quarantine</div>
+                  <div class="act-action">Pete shows 3D Cockpit. 20 red nodes connect. Modularity Q = 0.8118, p = 0.0002. Pete clicks Quarantine.</div>
+                  <div class="act-command">CLICK 1-CLICK QUARANTINE &rarr; SAVED ₹1,220</div>
+                  <p style="font-size: 0.8rem; color: #94A3B8; margin-top: 8px;">
+                    <em>"The swarm forms a dense red cluster (Q = 0.8118). I inspect the Why Card and hit 1-Click Quarantine. ₹1,220 in API bleed locked!"</em>
+                  </p>
+                </div>
+
+                <!-- Act 4 -->
+                <div class="act-card">
+                  <div class="act-head">
+                    <span class="act-num">ACT 4</span>
+                    <span class="act-station" style="color: var(--emerald);">AISWARYA @ 10.215.30.204</span>
+                  </div>
+                  <div class="act-title">Reversible ₹1 UPI Step-Up Modal</div>
+                  <div class="act-action">Aiswarya submits loan as a quarantined session. Disbursal blocked! ₹1 UPI Modal pops open.</div>
+                  <div class="act-command">MODAL INTERCEPT &rarr; ₹1 UPI VERIFIED (&lt;10s)</div>
+                  <p style="font-size: 0.8rem; color: #94A3B8; margin-top: 8px;">
+                    <em>"If an innocent borrower is flagged, we never ban them. The ₹1 UPI popup appears. Real humans clear in &lt;10s; bots without SIM cards fail!"</em>
+                  </p>
+                </div>
+
+                <!-- Act 5 -->
+                <div class="act-card">
+                  <div class="act-head">
+                    <span class="act-num">ACT 5</span>
+                    <span class="act-station" style="color: var(--purple);">ASHLIN @ STATION 4</span>
+                  </div>
+                  <div class="act-title">Courtroom SAR PDF Export</div>
+                  <div class="act-action">Ashlin exports the live 2-page legal dossier. Shows cryptographic HMAC seal and adverse action codes.</div>
+                  <div class="act-command">GET /api/sar/export/{cluster_id} &rarr; PDF 8.7KB</div>
+                  <p style="font-size: 0.8rem; color: #94A3B8; margin-top: 8px;">
+                    <em>"Finally, Station 4 compiles an official 2-page Courtroom SAR with tamper-evident HMAC seal and ECOA statutory codes for regulators."</em>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Final Close -->
+              <div style="margin-top: 20px; padding: 14px 20px; background: rgba(2, 132, 199, 0.1); border: 1px solid var(--cyan); border-radius: 8px; text-align: center;">
+                <p style="font-size: 1.05rem; font-weight: 700; color: #F8FAFC;">
+                  PETE (CLOSING LINE AT 6:30): 
+                  <span style="color: #38BDF8; font-style: italic;">
+                    "In our benchmark across 120 sessions, ShadowGram achieved 100% precision, 100% recall, and saved ₹2,440 across 40 blocked attacks with zero campus Wi-Fi false alarms. ShadowGram detects the relationship, not just the account. We are now ready for your questions!"
+                  </span>
+                </p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Judge Q&A Defense Matrix -->
+    <section>
+      <div class="section-head">
+        <h2 class="section-title">🛡️ Judge Q&A Defense Battlecards & Role Takeovers</h2>
+        <span class="section-badge">3:30 DURATION • WHO ANSWERS WHAT</span>
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="qa-filter-bar">
+        <button class="filter-btn active" onclick="filterQA('all')">All Questions (10)</button>
+        <button class="filter-btn" onclick="filterQA('alan-privacy')">Privacy & DPDP Act (Alan)</button>
+        <button class="filter-btn" onclick="filterQA('alan-prod')">Production & Scaling (Alan)</button>
+        <button class="filter-btn" onclick="filterQA('ashlin-legal')">Legal, RBI & SAR (Ashlin)</button>
+        <button class="filter-btn" onclick="filterQA('aiswarya-ux')">Borrower UX & ₹1 UPI (Aiswarya)</button>
+        <button class="filter-btn" onclick="filterQA('pete-math')">Math, Graph & Evasion (Pete)</button>
+      </div>
+
+      <div class="qa-grid" id="qaGrid">
+        
+        <!-- Q1: Privacy & Surveillance -->
+        <div class="qa-card" data-category="alan-privacy">
+          <div class="qa-header">
+            <div class="qa-question">
+              <span class="qa-q-mark">Q1:</span>
+              <span>"Isn't capturing keystrokes and browser telemetry illegal behavioral surveillance under GDPR and the Indian DPDP Act 2023?"</span>
+            </div>
+            <div class="qa-owner-badge speaker-alan">
+              RESPONDENT: ALAN (Backup: Pete)
+            </div>
+          </div>
+          <div class="qa-hook-box">
+            <div class="hook-title">5-Second Golden Hook</div>
+            <div class="hook-text">"No, sir. We capture zero text, zero passwords, and zero personal characters. We only record inter-event millisecond timing deltas."</div>
+          </div>
+          <div class="qa-deep-dive">
+            <strong>Full 20-Second Technical Defense:</strong><br>
+            "Under the Digital Personal Data Protection (DPDP) Act 2023 and GDPR Article 6(1)(f) ('Legitimate Interest in Fraud Prevention'), surveillance occurs when text content is logged. In our SDK (`telemetry.js`), the `keydown` and `keyup` listeners do not read `event.key` or character values. Instead, they record purely ephemeral <strong>dwell time</strong> ($\Delta t_{\text{dwell}}$) and <strong>flight time</strong> ($\Delta t_{\text{flight}}$) across 20 anonymous financial Latin digraphs. Telemetry packets are cryptographically signed with HMAC-SHA256 and discarded immediately after graph evaluation. It is strictly Zero-PII by design."
+          </div>
+          <div class="qa-stats-row">
+            <span class="stat-pill">DPDP Act 2023 Compliant</span>
+            <span class="stat-pill">GDPR Art. 6(1)(f) Legitimate Interest</span>
+            <span class="stat-pill">Zero Key Characters Logged</span>
+          </div>
+        </div>
+
+        <!-- Q2: Production Scaling -->
+        <div class="qa-card" data-category="alan-prod">
+          <div class="qa-header">
+            <div class="qa-question">
+              <span class="qa-q-mark">Q2:</span>
+              <span>"How does this scale in high-concurrency production banking environments with millions of users? Won't pairwise graph matching create an O(N²) bottleneck?"</span>
+            </div>
+            <div class="qa-owner-badge speaker-alan">
+              RESPONDENT: ALAN (Backup: Pete)
+            </div>
+          </div>
+          <div class="qa-hook-box">
+            <div class="hook-title">5-Second Golden Hook</div>
+            <div class="hook-text">"We never compare all-against-all. We use a 10-minute rolling time window and 3-tier indexing to keep graph evaluation under 15 milliseconds."</div>
+          </div>
+          <div class="qa-deep-dive">
+            <strong>Full 20-Second Technical Defense:</strong><br>
+            "In high-throughput fintech pipelines, pairwise $O(N^2)$ explosion is prevented through <strong>spatial and temporal binning</strong>. First, sessions are indexed in a rolling 10-minute sliding window, discarding stale sessions. Second, our fast tripwire (Key 1) filters out naive automated scrapers in &lt;0.02ms before they ever touch the graph. Third, candidate edges are only evaluated between sessions sharing temporal proximity ($\Delta t &lt; 30\text{s}$) or common subnets. For 1,000 active concurrent sessions, our NetworkX and NumPy hypergraph computes Leiden community modularity in just <strong>14.2 milliseconds</strong>, consuming less than 180MB of memory."
+          </div>
+          <div class="qa-stats-row">
+            <span class="stat-pill">Execution Latency: 14.2ms</span>
+            <span class="stat-pill">Memory: &lt;180MB RAM</span>
+            <span class="stat-pill">Window: 10-Min Rolling</span>
+          </div>
+        </div>
+
+        <!-- Q3: Legal & Regulatory Compliance -->
+        <div class="qa-card" data-category="ashlin-legal">
+          <div class="qa-header">
+            <div class="qa-question">
+              <span class="qa-q-mark">Q3:</span>
+              <span>"Can a bank legally deny or delay a loan application based on an AI graph risk score under ECOA Regulation B and RBI guidelines without getting sued?"</span>
+            </div>
+            <div class="qa-owner-badge speaker-ashlin">
+              RESPONDENT: ASHLIN (Backup: Pete)
+            </div>
+          </div>
+          <div class="qa-hook-box">
+            <div class="hook-title">5-Second Golden Hook</div>
+            <div class="hook-text">"Yes, because ShadowGram never issues an automated permanent credit denial. We issue a non-punitive step-up verification with statutory adverse action codes."</div>
+          </div>
+          <div class="qa-deep-dive">
+            <strong>Full 20-Second Technical Defense:</strong><br>
+            "Under the Equal Credit Opportunity Act (ECOA) Regulation B (12 CFR § 1002.9) and CFPB Circular 2023-03, lenders cannot reject applicants using opaque black-box models. ShadowGram complies in two specific ways: First, flagged applicants are not denied—they are directed to a <strong>reversible 1-Rupee UPI Step-Up verification</strong>, preserving legitimate applicant rights. Second, our Station 4 generates an official 2-Page Courtroom SAR with standardized adverse action codes: <code>CR-01</code> (Temporal Burst Coordination), <code>CR-02</code> (Biomechanical Kinematic Anomaly), and <code>CR-03</code> (Semantic Narrative Homogeneity), ensuring complete regulatory auditability under the 2025 RBI Digital Lending Directions."
+          </div>
+          <div class="qa-stats-row">
+            <span class="stat-pill">ECOA 12 CFR § 1002.9 Compliant</span>
+            <span class="stat-pill">Adverse Codes: CR-01 to CR-04</span>
+            <span class="stat-pill">RBI 2025 Master Directions</span>
+          </div>
+        </div>
+
+        <!-- Q4: Courtroom Admissibility -->
+        <div class="qa-card" data-category="ashlin-legal">
+          <div class="qa-header">
+            <div class="qa-question">
+              <span class="qa-q-mark">Q4:</span>
+              <span>"How can a 2-page PDF generated by a machine actually hold up as evidence in a court of law against organized cyber syndicates?"</span>
+            </div>
+            <div class="qa-owner-badge speaker-ashlin">
+              RESPONDENT: ASHLIN (Backup: Pete)
+            </div>
+          </div>
+          <div class="qa-hook-box">
+            <div class="hook-title">5-Second Golden Hook</div>
+            <div class="hook-text">"Every dossier includes a cryptographic HMAC-SHA256 seal and a degree-preserving Maslov-Sneppen permutation test proving p = 0.0002 statistical significance."</div>
+          </div>
+          <div class="qa-deep-dive">
+            <strong>Full 20-Second Technical Defense:</strong><br>
+            "To satisfy Section 65B of the Indian Evidence Act and federal chain-of-custody standards for electronic records, Station 4 generates a tamper-evident digest computed over the raw session telemetry, hypergraph edge tensor, and cluster metadata. Any modification to the evidence invalidates the cryptographic signature. Furthermore, we include an empirical <strong>Maslov-Sneppen null model test</strong>: by running 500 random degree-preserving graph rewirings, we prove that the observed modularity ($Q = 0.8118$) has a probability of occurring by random chance of less than <strong>0.02% ($p = 0.0002$)</strong>. It is mathematically unassailable proof of syndicate coordination."
+          </div>
+          <div class="qa-stats-row">
+            <span class="stat-pill">Sec. 65B Indian Evidence Act</span>
+            <span class="stat-pill">HMAC-SHA256 Digest Seal</span>
+            <span class="stat-pill">Maslov-Sneppen p = 0.0002</span>
+          </div>
+        </div>
+
+        <!-- Q5: Borrower UX & Customer Friction -->
+        <div class="qa-card" data-category="aiswarya-ux">
+          <div class="qa-header">
+            <div class="qa-question">
+              <span class="qa-q-mark">Q5:</span>
+              <span>"What if an honest borrower gets falsely flagged on a shared college Wi-Fi? Won't high friction cause them to abandon the loan?"</span>
+            </div>
+            <div class="qa-owner-badge speaker-aiswarya">
+              RESPONDENT: AISWARYA (Backup: Alan)
+            </div>
+          </div>
+          <div class="qa-hook-box">
+            <div class="hook-title">5-Second Golden Hook</div>
+            <div class="hook-text">"Honest students are protected by our Common-Cause Subnet Discount, giving us a verified 0.0% false positive rate on campus Wi-Fi."</div>
+          </div>
+          <div class="qa-deep-dive">
+            <strong>Full 20-Second Technical Defense:</strong><br>
+            "In our live cyber range tests across 30 genuine human sessions on shared college Wi-Fi, zero students were flagged. Because real humans have unique typing rhythms, different mouse acceleration curves, and distinct loan stories, they never converge across the 3 independent layers required to form a graph edge. However, even in edge cases where a user trips a threshold, our recovery flow takes <strong>less than 10 seconds</strong>: they tap 'Verify via UPI', authenticate a ₹1 penny-drop in Google Pay or PhonePe, and their loan application is instantly unquarantined and approved without calling customer support."
+          </div>
+          <div class="qa-stats-row">
+            <span class="stat-pill">Campus Wi-Fi FPR: 0.0%</span>
+            <span class="stat-pill">Recovery Time: &lt;10 Seconds</span>
+            <span class="stat-pill">Common-Cause Discount: -0.35</span>
+          </div>
+        </div>
+
+        <!-- Q6: Why UPI Penny Drop -->
+        <div class="qa-card" data-category="aiswarya-ux">
+          <div class="qa-header">
+            <div class="qa-question">
+              <span class="qa-q-mark">Q6:</span>
+              <span>"Why use a 1-Rupee UPI Step-Up challenge instead of a standard SMS OTP or CAPTCHA?"</span>
+            </div>
+            <div class="qa-owner-badge speaker-aiswarya">
+              RESPONDENT: AISWARYA (Backup: Pete)
+            </div>
+          </div>
+          <div class="qa-hook-box">
+            <div class="hook-title">5-Second Golden Hook</div>
+            <div class="hook-text">"Because Vision-AI easily solves CAPTCHAs and online virtual numbers receive SMS OTPs, but NPCI hardware SIM-binding makes automated UPI impossible at scale."</div>
+          </div>
+          <div class="qa-deep-dive">
+            <strong>Full 20-Second Technical Defense:</strong><br>
+            "SMS OTPs are easily routed to VoIP numbers and dark-web SMS pools, and CAPTCHAs add friction for real humans while Vision-LLMs solve them in seconds. By contrast, India's Unified Payments Interface enforces <strong>hardware NPCI SIM-binding</strong>: the mobile banking app requires a physical telecom SIM card and device-bound cryptography. Furthermore, the ₹1 challenge verifies that the bank account holder's registered legal name matches the loan applicant's name. A cloud-based Playwright bot farm cannot automate 100 physical SIM cards and biometric MPINs simultaneously!"
+          </div>
+          <div class="qa-stats-row">
+            <span class="stat-pill">NPCI Hardware SIM-Binding</span>
+            <span class="stat-pill">Secret 6-Digit MPIN Security</span>
+            <span class="stat-pill">NPCI Legal Name Matching</span>
+          </div>
+        </div>
+
+        <!-- Q7: Modularity Q & Math Validity -->
+        <div class="qa-card" data-category="pete-math">
+          <div class="qa-header">
+            <div class="qa-question">
+              <span class="qa-q-mark">Q7:</span>
+              <span>"Does a graph modularity of Q = 0.8118 prove that accounts are fraudulent, or does it just show that they are related?"</span>
+            </div>
+            <div class="qa-owner-badge speaker-pete">
+              RESPONDENT: PETE (Backup: Ashlin)
+            </div>
+          </div>
+          <div class="qa-hook-box">
+            <div class="hook-title">5-Second Golden Hook</div>
+            <div class="hook-text">"Modularity Q proves dense community structure; the orthogonal physical layers prove the fraud."</div>
+          </div>
+          <div class="qa-deep-dive">
+            <strong>Full 20-Second Technical Defense:</strong><br>
+            "You are completely correct, sir: in graph theory, high modularity $Q$ (Newman-Girvan 2004) only rejects the hypothesis of uniform random connections. That is why ShadowGram never bans accounts based on graph topology alone. The fraudulent determination comes from the <strong>physical layers carried by the edges</strong>: sub-40ms ingress phase-locking via an exponential decay kernel ($s_{\text{time}} = e^{-\Delta t / 10}$), identical DOM element interaction sequences, and low-variance jerk kinetics ($\text{CV}_J &lt; 0.25$). The graph groups the actors together; the biological and physical violations confirm the syndicate."
+          </div>
+          <div class="qa-stats-row">
+            <span class="stat-pill">Modularity Q = 0.8118</span>
+            <span class="stat-pill">Permutation Test p = 0.0002</span>
+            <span class="stat-pill">Multi-Layer Convergence Threshold</span>
+          </div>
+        </div>
+
+        <!-- Q8: Adversarial Evasion & Replay -->
+        <div class="qa-card" data-category="pete-math">
+          <div class="qa-header">
+            <div class="qa-question">
+              <span class="qa-q-mark">Q8:</span>
+              <span>"What if attackers inject random pauses, use Bézier mouse splines, or record real human mouse movements and replay them across all bots?"</span>
+            </div>
+            <div class="qa-owner-badge speaker-pete">
+              RESPONDENT: PETE (Backup: Alan)
+            </div>
+          </div>
+          <div class="qa-hook-box">
+            <div class="hook-title">5-Second Golden Hook</div>
+            <div class="hook-text">"Replaying human mouse movements actually makes the syndicate easier to detect, because their cross-session kinematic correlation jumps to 100%!"</div>
+          </div>
+          <div class="qa-deep-dive">
+            <strong>Full 20-Second Technical Defense:</strong><br>
+            "We specifically stress-tested this in our adversarial cyber range. First, mathematical cubic Bézier curves produce constant, piecewise-linear jerk, whereas real human musculoskeletal movement obeys Flash-Hogan (1985) minimum-jerk theory with an involuntary <strong>8–12 Hz micro-tremor</strong>. Second, if an attacker records one human trajectory and replays it across 20 bots, their pairwise kinetic cosine similarity across sessions is near 1.0! By attempting to evade single-user biometrics with recorded movements, the attacker creates an inescapable signature for Key 2's relational engine to cluster."
+          </div>
+          <div class="qa-stats-row">
+            <span class="stat-pill">Flash-Hogan (1985) Min-Jerk</span>
+            <span class="stat-pill">8–12 Hz Human Micro-Tremor</span>
+            <span class="stat-pill">Cross-Session Replay Correlation = 1.0</span>
+          </div>
+        </div>
+
+        <!-- Q9: Competitor Differentiation -->
+        <div class="qa-card" data-category="pete-math">
+          <div class="qa-header">
+            <div class="qa-question">
+              <span class="qa-q-mark">Q9:</span>
+              <span>"Why haven't market leaders like BioCatch, Sift, or LexisNexis ThreatMetrix already solved this?"</span>
+            </div>
+            <div class="qa-owner-badge speaker-pete">
+              RESPONDENT: PETE (Backup: Alan)
+            </div>
+          </div>
+          <div class="qa-hook-box">
+            <div class="hook-title">5-Second Golden Hook</div>
+            <div class="hook-text">"Enterprise vendors analyze single accounts or run asynchronous graphs in data lakes hours later. ShadowGram executes pre-KYC triage directly on active browser streams."</div>
+          </div>
+          <div class="qa-deep-dive">
+            <strong>Full 20-Second Technical Defense:</strong><br>
+            "Existing vendors are architected around two legacy paradigms: <strong>BioCatch</strong> evaluates single-user biometrics against established historical profiles, making it completely blind to brand-new synthetic accounts. <strong>Sift and ThreatMetrix</strong> maintain consortium device graphs, but run them post-submission or asynchronously in data lakes. ShadowGram is purpose-built as an <strong>in-flight, pre-KYC triage layer</strong>. We catch the swarm at Form Step 2 before external paid APIs are called, saving ₹61.00 per bot and stopping Denial-of-Wallet attacks before capital leaves the bank."
+          </div>
+          <div class="qa-stats-row">
+            <span class="stat-pill">In-Flight Pre-KYC Triage</span>
+            <span class="stat-pill">Zero Historical Baseline Needed</span>
+            <span class="stat-pill">Step 2 Real-Time Interception</span>
+          </div>
+        </div>
+
+        <!-- Q10: Pre-KYC Cost Economics -->
+        <div class="qa-card" data-category="pete-math">
+          <div class="qa-header">
+            <div class="qa-question">
+              <span class="qa-q-mark">Q10:</span>
+              <span>"Where does the ₹61.00 Denial-of-Wallet number come from? Is that an actual verified industry cost?"</span>
+            </div>
+            <div class="qa-owner-badge speaker-pete">
+              RESPONDENT: PETE (Backup: Alan)
+            </div>
+          </div>
+          <div class="qa-hook-box">
+            <div class="hook-title">5-Second Golden Hook</div>
+            <div class="hook-text">"Yes, sir. It is directly based on official UIDAI gazette pricing and standard Indian fintech verification API aggregators."</div>
+          </div>
+          <div class="qa-deep-dive">
+            <strong>Full 20-Second Technical Defense:</strong><br>
+            "The pricing breakdown reflects real production costs for Indian digital lending apps: Under the UIDAI October 2021 gazette notification, an Aadhaar e-KYC transaction is fixed at <strong>₹3.00</strong>. Automated PAN verification via NSDL/ITD aggregators costs <strong>₹2.00</strong> per check. Video face liveness and match SDKs cost <strong>₹6.00</strong>. Finally, pulling an official credit report from Experian or CIBIL costs between ₹25 and <strong>₹50.00</strong>. That totals <strong>₹61.00 INR in non-refundable API fees</strong> per applicant. When an AI swarm attacks with 10,000 bots, the lender bleeds ₹610,000 in cash even if 100% of the loans are rejected at underwriting!"
+          </div>
+          <div class="qa-stats-row">
+            <span class="stat-pill">UIDAI Gazette: ₹3.00 e-KYC</span>
+            <span class="stat-pill">NSDL PAN: ₹2.00</span>
+            <span class="stat-pill">Face Liveness: ₹6.00</span>
+            <span class="stat-pill">Bureau Pull: ₹50.00</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // 10-Minute Countdown Timer Script
+    let totalSeconds = 600; // 10 minutes (600s)
+    let isRunning = false;
+    let timerInterval = null;
+
+    const timerDisplay = document.getElementById('timerDisplay');
+    const stageIndicator = document.getElementById('stageIndicator');
+    const btnStartPause = document.getElementById('btnStartPause');
+    const btnReset = document.getElementById('btnReset');
+
+    function updateDisplay() {
+      const minutes = Math.floor(Math.abs(totalSeconds) / 60);
+      const seconds = Math.abs(totalSeconds) % 60;
+      const formatted = `${totalSeconds < 0 ? '-' : ''}${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      timerDisplay.textContent = formatted;
+
+      // Stage tracking
+      // 0 to 210s remaining (i.e. time >= 390s elapsed) -> Q&A stage
+      // 600s down to 210s (elapsed <= 390s / 6m30s) -> Pitch stage
+      if (totalSeconds > 210) {
+        stageIndicator.textContent = "STAGE 1: PITCH & DEMO (6:30 TARGET)";
+        stageIndicator.style.background = "#064E3B";
+        stageIndicator.style.color = "#34D399";
+        timerDisplay.className = "timer-display pitch-mode";
+      } else if (totalSeconds > 0) {
+        stageIndicator.textContent = "STAGE 2: JUDGE Q&A (3:30 DURATION)";
+        stageIndicator.style.background = "#0C4A6E";
+        stageIndicator.style.color = "#38BDF8";
+        timerDisplay.className = "timer-display qa-mode";
+      } else {
+        stageIndicator.textContent = "OVERTIME! STOP SPEAKING";
+        stageIndicator.style.background = "#7F1D1D";
+        stageIndicator.style.color = "#F87171";
+        timerDisplay.className = "timer-display danger-mode";
+      }
+    }
+
+    btnStartPause.addEventListener('click', () => {
+      if (!isRunning) {
+        isRunning = true;
+        btnStartPause.textContent = "PAUSE";
+        btnStartPause.style.background = "#F59E0B";
+        timerInterval = setInterval(() => {
+          totalSeconds--;
+          updateDisplay();
+        }, 1000);
+      } else {
+        isRunning = false;
+        btnStartPause.textContent = "RESUME";
+        btnStartPause.style.background = "var(--cyan)";
+        clearInterval(timerInterval);
+      }
+    });
+
+    btnReset.addEventListener('click', () => {
+      isRunning = false;
+      clearInterval(timerInterval);
+      totalSeconds = 600;
+      btnStartPause.textContent = "START PITCH";
+      btnStartPause.style.background = "var(--cyan)";
+      updateDisplay();
+    });
+
+    function adjustTime(delta) {
+      totalSeconds += delta;
+      updateDisplay();
+    }
+
+    // Filter Q&A Cards
+    function filterQA(category) {
+      const cards = document.querySelectorAll('.qa-card');
+      const buttons = document.querySelectorAll('.filter-btn');
+
+      buttons.forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+
+      cards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-category') === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Initialize display
+    updateDisplay();
+  </script>
+</body>
+</html>

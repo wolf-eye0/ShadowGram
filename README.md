@@ -95,8 +95,35 @@ python compliance_terminal.py
 
 ---
 
-## 🗂️ Master Protocol & Audit Documentation
-* [`PROGRESS_CHECKPOINT_LEAD.md`](PROGRESS_CHECKPOINT_LEAD.md) - Lead Architect (Pete) M1 & M2 Milestone Certification.
-* [`PROGRESS_CHECKPOINT_MEMBER3.md`](PROGRESS_CHECKPOINT_MEMBER3.md) - Red Team Lead (Alan) M1 & M4 Protocol Audit.
-* [`00_CHECKPOINT_AND_INTEGRATION_PROTOCOL.md`](ShadowGram_Team_Execution_Pack/00_CHECKPOINT_AND_INTEGRATION_PROTOCOL.md) - Global Frozen Protocol and Cross-Platform Setup.
-* [`SHADOWGRAM_EMPIRICAL_PROOFS_AND_AUDIT_DOSSIER.md`](SHADOWGRAM_EMPIRICAL_PROOFS_AND_AUDIT_DOSSIER.md) - Fact-checked legal & empirical research dossier.
+---
+
+## 📚 Master Documentation, Specifications & Deliverables
+
+### 🏆 Presentation Decks & Interactive Live Pitch Matrix
+* [**`public/presentation_roles_and_pitch_script.html`**](public/presentation_roles_and_pitch_script.html) — Interactive 10-Minute Judging Dashboard with countdown timer, slide-by-slide scripts, hardware triggers, and filterable 10-card Judge Q&A Defense Matrix.
+* [**`Final ppt template.pptx`**](Final%20ppt%20template.pptx) — The official HackAthena'26 5-slide competition presentation deck (featuring transparent card containers, slate borders, and 24pt bold typography).
+* [**`ShadowGram_Final_Demo_Presentation.pptx`**](ShadowGram_Final_Demo_Presentation.pptx) — Standalone presentation deck backup.
+
+### 🔬 Technical Specifications & Mathematics
+* [**`SHADOWGRAM_THE_COMPLETE_JOURNEY_STORY.md`**](SHADOWGRAM_THE_COMPLETE_JOURNEY_STORY.md) — Comprehensive narrative chronicle of the entire project, architecture pivot, real-world trials, and 28 Git commits.
+* [**`SHADOWGRAM_PHASE2_STE100_TECHNICAL_SPECIFICATION.md`**](SHADOWGRAM_PHASE2_STE100_TECHNICAL_SPECIFICATION.md) — Complete Phase 2 Technical Specification written in ASD-STE100 (Simplified Technical English).
+* [**`public/shadowgram_phase2_technical_specification_ste100.html`**](public/shadowgram_phase2_technical_specification_ste100.html) — ASD-STE100 interactive HTML specification with vector SVG diagrams.
+* [**`SHADOWGRAM_MATHEMATICAL_AND_DETECTION_DEEP_DIVE.md`**](SHADOWGRAM_MATHEMATICAL_AND_DETECTION_DEEP_DIVE.md) — Mathematical proofs (Flash-Hogan minimum jerk, 5-layer multiplex tensor, Louvain modularity $Q$, Maslov-Sneppen null model).
+* [**`PHASE_2_MASTER_DEMO_AND_MATHEMATICS_SPECIFICATION.md`**](PHASE_2_MASTER_DEMO_AND_MATHEMATICS_SPECIFICATION.md) — Master demonstration specifications and sensor thresholds.
+
+### 📋 Protocols, Audits & Station Guides
+* [`PROGRESS_CHECKPOINT_LEAD.md`](PROGRESS_CHECKPOINT_LEAD.md) — Lead Architect (Pete) M1 & M2 Milestone Certification.
+* [`PROGRESS_CHECKPOINT_MEMBER3.md`](PROGRESS_CHECKPOINT_MEMBER3.md) — Red Team Lead (Alan) M1 & M4 Protocol Audit.
+* [`00_CHECKPOINT_AND_INTEGRATION_PROTOCOL.md`](ShadowGram_Team_Execution_Pack/00_CHECKPOINT_AND_INTEGRATION_PROTOCOL.md) — Global Frozen Protocol and Cross-Platform Setup.
+* [`SHADOWGRAM_EMPIRICAL_PROOFS_AND_AUDIT_DOSSIER.md`](SHADOWGRAM_EMPIRICAL_PROOFS_AND_AUDIT_DOSSIER.md) — Fact-checked legal & empirical research dossier.
+* [`ShadowGram_Master_Book/`](ShadowGram_Master_Book/) — Complete 80-page forensic blueprint and empirical proof archive.
+* [`stations/`](stations/) — Multi-station source packages for Alan (Station 1), Pete (Station 2), Aiswarya (Station 3), and Ashlin (Station 4).
+
+---
+
+## 🧪 Full Test Suite Execution (62/62 Tests Passing)
+```bash
+./venv/bin/python run_all_tests.py
+# 62/62 verified across all 8 phases (100% success rate)
+```
+

@@ -48,6 +48,8 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+*.save
+*.bak
 
 # Environment variables & secrets
 .env
@@ -56,3 +58,4 @@ Thumbs.db
 .env.development.local
 .env.test.local
 .env.production.local
+

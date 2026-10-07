@@ -40,6 +40,7 @@
     .aa-step-title { font-size: 0.75rem; font-weight: 700; color: #38bdf8; text-transform: uppercase; margin-bottom: 0.35rem; text-align: left; }
     .demo-data-card { background: #111827; border: 1px solid #1f2937; border-radius: 0.4rem; padding: 0.5rem; font-family: monospace; font-size: 0.7rem; color: #94a3b8; text-align: left; margin-bottom: 0.6rem; }
     .progress-line { font-family: monospace; font-size: 0.75rem; color: #38bdf8; margin: 0.5rem 0; min-height: 18px; }
+  </style>
 </head>
 <body>
 
@@ -243,6 +244,7 @@
     const successBox = document.getElementById('success-box');
     const stepupModal = document.getElementById('stepup-modal');
     let isQuarantined = false;
+    let isFlagged = false;
     let isQuarantinedModalOpen = false;
 
     function triggerQuarantineStepUp(reason) {
@@ -257,10 +259,15 @@
       }
     }
 
-    // Auto-popup Step-Up modal when session is quarantined (Second-Chance Safeguard)
+    // Auto-popup Step-Up modal when session is quarantined or flagged
     window.addEventListener('shadowgram:quarantined', function(e) {
-      console.log('[AthenaPay] Quarantine triggered for this session. Auto-opening Step-Up modal...', e.detail);
-      triggerQuarantineStepUp('Automated Quarantine Review');
+      console.log('[AthenaPay] Safeguard event for session:', e.detail);
+      if (e.detail && (e.detail.is_quarantined || e.detail.status === 'quarantined')) {
+        isQuarantined = true;
+        triggerQuarantineStepUp('Automated Quarantine Review');
+      } else if (e.detail && (e.detail.is_flagged || e.detail.requires_stepup)) {
+        isFlagged = true;
+      }
     });
 
     // Real-time WebSocket listener for immediate cross-device quarantine trigger from Cockpit
@@ -286,19 +293,26 @@
       setInterval(async function() {
         if (window.ShadowGramTelemetry && window.ShadowGramTelemetry.checkStatus && !isQuarantinedModalOpen) {
           const st = await window.ShadowGramTelemetry.checkStatus();
-          if (st && st.is_quarantined) {
+          if (st && (st.is_quarantined || st.status === 'quarantined')) {
             triggerQuarantineStepUp('Status Poll Quarantine');
+          } else if (st && st.is_flagged) {
+            isFlagged = true;
           }
         }
       }, 1200);
     })();
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
       e.preventDefault();
-      if (isQuarantined) {
-        triggerQuarantineStepUp('Verification required before disbursal');
-        return;
+
+      const btnApply = document.getElementById('btn-apply');
+      const origText = btnApply ? btnApply.textContent : 'APPLY NOW';
+      if (btnApply) {
+        btnApply.textContent = 'EVALUATING RISK INVARIANTS...';
+        btnApply.style.opacity = '0.7';
       }
+
+      // 1. Push and flush telemetry event
       if (window.ShadowGramTelemetry) {
         window.ShadowGramTelemetry.pushEvent('loan_submit', {
           route_path: '/loan -> /loan_approved',
@@ -306,6 +320,27 @@
         });
         window.ShadowGramTelemetry.flush();
       }
+
+      // 2. Query backend live session state
+      let statusData = null;
+      if (window.ShadowGramTelemetry && window.ShadowGramTelemetry.checkStatus) {
+        statusData = await window.ShadowGramTelemetry.checkStatus();
+      }
+
+      if (btnApply) {
+        btnApply.textContent = origText;
+        btnApply.style.opacity = '1.0';
+      }
+
+      // 3. If session is flagged (RED) or quarantined (AMBER), INTERCEPT and auto-pop Step-Up!
+      const requiresStepUp = isQuarantined || isFlagged || (statusData && (statusData.requires_stepup || statusData.is_flagged || statusData.is_quarantined));
+      if (requiresStepUp) {
+        console.warn('[AthenaPay] Disbursal paused: Risk invariants flagged. Triggering Step-Up verification.');
+        triggerQuarantineStepUp('Verification required before loan disbursal');
+        return;
+      }
+
+      // 4. Honest Human: Disburse loan
       form.style.display = 'none';
       successBox.style.display = 'block';
     });

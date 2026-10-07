@@ -340,7 +340,7 @@
         }).then(function (resp) {
           return resp.json();
         }).then(function (data) {
-          if (data && (data.is_quarantined || data.status === 'quarantined')) {
+          if (data && (data.is_quarantined || data.status === 'quarantined' || data.is_flagged || data.requires_stepup)) {
             window.dispatchEvent(new CustomEvent('shadowgram:quarantined', { detail: data }));
           }
         }).catch(function (err) {
@@ -365,7 +365,7 @@
         const base = BACKEND_ENDPOINT.replace(/\/telemetry$/, '');
         const res = await fetch(base + '/api/session/status?account_id=' + encodeURIComponent(accountId));
         const data = await res.json();
-        if (data && (data.is_quarantined || data.status === 'quarantined')) {
+        if (data && (data.is_quarantined || data.status === 'quarantined' || data.is_flagged || data.requires_stepup)) {
           window.dispatchEvent(new CustomEvent('shadowgram:quarantined', { detail: data }));
         }
         return data;
